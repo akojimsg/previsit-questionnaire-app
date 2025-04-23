@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: previsit-questionnaire-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: previsit-questionnaire
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - previsit-questionnaire-app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: previsit-questionnaire-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - previsit-questionnaire-app-network
+
+  previsit-api:
+    build:
+      context: .
+      dockerfile: previsit-api/Dockerfile
+    image: previsit-api
+    container_name: previsit-questionnaire-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/previsit-questionnaire
+      - REDIS_URI=redis://redis:6379
+      - PORT=3000
+      - CONSOLE_URL=http://previsit-console:3000
+      - APP_URL=http://previsit-app:3000
+    networks:
+      - previsit-questionnaire-app-network
+
+  previsit-console:
+    build:
+      context: .
+      dockerfile: previsit-console/Dockerfile
+    image: previsit-console
+    container_name: previsit-questionnaire-console
+    ports:
+      - "5173:3000"
+    depends_on:
+      - previsit-api
+    environment:
+      - NEXT_PUBLIC_API_URL=http://previsit-api:3000/api/v1
+    networks:
+      - previsit-questionnaire-app-network
+
+  previsit-app:
+    build:
+      context: .
+      dockerfile: previsit-app/Dockerfile
+    image: previsit-app
+    container_name: previsit-questionnaire-app
+    ports:
+      - "5174:3000"
+    depends_on:
+      - previsit-api
+    environment:
+      - NEXT_PUBLIC_API_URL=http://previsit-api:3000/api/v1
+    networks:
+      - previsit-questionnaire-app-network
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  previsit-questionnaire-app-network:
+    driver: bridge

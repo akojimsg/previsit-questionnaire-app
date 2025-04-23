@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "commonjs",
+        "baseUrl": ".",
+        "paths": {
+            "@api/*": [
+                "previsit-api/src/*"
+            ],
+            "@previsit-api/*": [
+                "previsit-api/src/*"
+            ],
+            "@previsit-app/*": [
+                "previsit-app/src/*"
+            ],
+            "@previsit-console/*": [
+                "previsit-console/src/*"
+            ],
+            "@previsit-shared/*": [
+                "libs/shared/src/*"
+            ],
+            "@previsit-shared/components/*": [
+                "libs/shared/src/components/*"
+            ],
+            "@previsit-shared/types/*": [
+                "libs/shared/src/types/*"
+            ],
+            "@previsit-shared/api/*": [
+                "libs/shared/src/api/*"
+            ],
+        },
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@previsit-libs/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "build": "echo 'no build needed'",
+    "test": "echo 'No test needed'"
+  },
+  "keywords": [],
+  "author": "EI Akoji",
+  "license": "ISC",
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.10",
+    "@radix-ui/react-select": "^2.2.2",
+    "@tanstack/react-table": "^8.21.3",
+    "classnames": "^2.5.1",
+    "lucide-react": "^0.503.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/date-fns": "^2.6.3",
+    "date-fns": "^4.1.0"
+  }
+}

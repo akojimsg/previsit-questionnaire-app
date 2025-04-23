@@ -1,0 +1,21 @@
+{
+  "name": "previsit-questionnaire-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A full-stack system capable of handling and sending patient data to various EHR (Electronic Health Record) systems based on which EHR system is selected by the client (e.g. hospitals and clinics)",
+  "main": "index.js",
+  "scripts": {
+    "build": "pnpm -r run build"
+  },
+  "keywords": [],
+  "author": "EI Akoji",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.30.1",
+    "@typescript-eslint/parser": "^8.30.1",
+    "eslint": "^9.25.0",
+    "eslint-import-resolver-typescript": "^4.3.3",
+    "eslint-plugin-import": "^2.31.0",
+    "typescript": "^5.8.3"
+  }
+}
