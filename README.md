@@ -7,7 +7,7 @@
   Your browser does not support the video tag.
 </video>
 
-[Demo Video Link](https://drive.google.com/file/d/1YYDtVdH-ls4mmpA12z4u_KNnNy6fo0Ym/view?usp=sharing" type="video/mp4)
+(Demo Video Link)[https://drive.google.com/file/d/1YYDtVdH-ls4mmpA12z4u_KNnNy6fo0Ym/view?usp=sharing" type="video/mp4]
 
 ---
 
