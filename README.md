@@ -3,7 +3,7 @@
 ## 📺 See in Action
 
 <video controls width="800">
-  <source src="./demo%20video/Ehr%20data%20mapping%20system%20-%20demo.mov" type="video/mp4">
+  <source src="https://drive.google.com/file/d/1YYDtVdH-ls4mmpA12z4u_KNnNy6fo0Ym/view?usp=sharing" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
