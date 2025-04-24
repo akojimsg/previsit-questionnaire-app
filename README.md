@@ -2,7 +2,7 @@
 
 ## 📺 See in Action
 
-[![Watch the demo](./thumbnail.png)](https://drive.google.com/file/d/1YYDtVdH-ls4mmpA12z4u_KNnNy6fo0Ym/view?usp=sharing" type="video/mp4)
+[![Watch the demo](./thumbnail.png)](https://drive.google.com/file/d/1YYDtVdH-ls4mmpA12z4u_KNnNy6fo0Ym/view?usp=sharing)
 
 
 [Demo Video Link](https://drive.google.com/file/d/1YYDtVdH-ls4mmpA12z4u_KNnNy6fo0Ym/view?usp=sharing)
