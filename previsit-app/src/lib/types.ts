@@ -26,6 +26,14 @@ export interface QuestionFieldProps {
   onChange: (key: string, value: AnswerValue) => void;
 }
 
+export interface QuestionnaireFormProps {
+  questionnaireName: string;
+  tenantId: string;
+  patientId: string;
+  questions: Question[];
+  submitButtonLabel?: string; // This property can be handled by other i18n logic eg next-i18n
+}
+
 export type AnswerValue = string | string[] | boolean;
 
 export interface SubmitResponseDto {

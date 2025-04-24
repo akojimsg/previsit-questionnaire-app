@@ -1,4 +1,7 @@
-import { Question, Questionnaire } from "@/lib/types";
+import { AnswerValue, Question, Questionnaire } from "@/lib/types";
+
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
 
 export async function fetchResolvedQuestionnaire(
   name: string,
@@ -6,7 +9,7 @@ export async function fetchResolvedQuestionnaire(
   lang: string = "en"
 ): Promise<Questionnaire> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/questionnaire/resolved?name=${name}&lang=${lang}`,
+    `${API_BASE_URL}/v1/questionnaire/resolved?name=${name}&lang=${lang}`,
     {
       headers: { "x-tenant-id": tenantId },
     }
@@ -26,4 +29,29 @@ export async function fetchResolvedQuestionnaire(
   }));
 
   return { ...data, questions };
+}
+
+export async function submitPatientAnswers(params: {
+  tenantId: string;
+  questionnaireName: string;
+  patientId: string;
+  answers: Record<string, AnswerValue>;
+}) {
+  const { tenantId, questionnaireName, patientId, answers } = params;
+
+  const res = await fetch(`${API_BASE_URL}/v1/answers`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-tenant-id": tenantId,
+    },
+    body: JSON.stringify({ tenantId, questionnaireName, patientId, answers }),
+  });
+
+  if (!res.ok) {
+    const msg = await res.text();
+    throw new Error(msg || "Failed to submit answers");
+  }
+
+  return res.json();
 }

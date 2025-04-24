@@ -34,3 +34,13 @@ export interface Questionnaire {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface PatientAnswer {
+  tenantId: string;
+  patientId: string;
+  questionnaireName: string;
+  submittedAt: string;
+  answers: Record<string, string>;
+  createdAt?: string;
+  updatedAt?: string;
+}

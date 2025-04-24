@@ -1,0 +1,6 @@
+questionKey,ehrProvider,endpoint,ehrField
+medicalHistory,Testprovider,/api/clinical/HISTORY_MEDICAL,HISTORY_MEDICAL_PATIENT
+allergies,Testprovider,/api/clinical/ALLERGIES,ALLERGIES_PATIENT
+currentMedications,Testprovider2,/api/patient/MEDICATIONS,CURRENT_MEDS_PAT
+familyHistory,Testprovider3,/api/family/HISTORY,FAMILY_HISTORY_PAT
+socialHistory,Testprovider,/api/social/HISTORY,HISTORY_SOCIAL_PATIENT

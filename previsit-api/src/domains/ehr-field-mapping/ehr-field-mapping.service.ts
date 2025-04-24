@@ -60,6 +60,35 @@ export class EhrFieldMappingService {
   }
 
   /**
+   * Get all mappings for a tenant
+   * @param tenantId tenant ID
+   * @description Get all mappings for a tenant
+   * @returns an array of ehr field mappings
+   * @throws NotFoundException if no mappings are found
+   */
+  async bulkCreate(
+    mappings: Array<{
+      tenantId: string;
+      questionKey: string;
+      ehrProvider: string;
+      endpoint: string;
+      ehrField: string;
+    }>,
+  ): Promise<{ success: number; failed: number }> {
+    let success = 0;
+    let failed = 0;
+    const ops = mappings.map((m) => ({
+      insertOne: { document: m },
+    }));
+    const res = await this.ehrFieldMappingModel.bulkWrite(ops, {
+      ordered: false, // continue on error
+    });
+    success = res.insertedCount;
+    failed = mappings.length - success;
+    return { success, failed };
+  }
+
+  /**
    * Get all mappings for a tenant filtered by EHR provider
    * @param tenantId tenant ID
    * @param ehrProvider ehr provider

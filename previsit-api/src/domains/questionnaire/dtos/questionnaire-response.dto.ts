@@ -40,28 +40,26 @@ export class QuestionnaireResponseDto {
 }
 
 export class LocalizedQuestion {
-  @ApiProperty({ example: 'dob' })
+  @ApiProperty({ example: 'gender' })
   questionKey!: string;
 
   @ApiProperty({
-    example: 'What is your date of birth?',
-    description: 'Localized question label',
+    example: '¿Cuál es su género?',
   })
   label!: string;
 
   @ApiProperty({
-    example: 'text',
+    example: 'radio',
     enum: ['text', 'radio', 'checkbox', 'date'],
   })
   type!: string;
 
   @ApiProperty({
     example: [
-      { value: 'yes', label: 'Yes' },
-      { value: 'no', label: 'No' },
+      { value: 'male', label: 'Hombre' },
+      { value: 'female', label: 'Mujer' },
     ],
     required: false,
-    description: 'Localized options',
   })
   options?: { value: string; label: string }[];
 

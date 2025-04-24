@@ -2,16 +2,9 @@
 
 import { useState } from "react";
 import { QuestionField } from "./QuestionField";
-import { Question, AnswerValue } from "@/lib/types";
+import { Question, AnswerValue, QuestionnaireFormProps } from "@/lib/types";
 import { useRouter } from "next/navigation";
-
-interface QuestionnaireFormProps {
-  questionnaireName: string;
-  tenantId: string;
-  patientId: string;
-  questions: Question[];
-  submitButtonLabel?: string; // This property can be handled by other i18n logic eg next-i18n
-}
+import { submitPatientAnswers } from "@/lib/api";
 
 export function QuestionnaireForm({
   questionnaireName,
@@ -47,53 +40,39 @@ export function QuestionnaireForm({
     return val === undefined || val === null;
   };
 
-  const handleSubmit = async () => {
-    const missing = questions.filter(
-      (q) => q.isRequired && isEmpty(formState[q.key])
-    );
-    if (missing.length > 0) {
-      setError(`Please fill: ${missing.map((m) => m.label).join(", ")}`);
-      return;
-    }
+const handleSubmit = async () => {
+  const missing = questions.filter(
+    (q) => q.isRequired && isEmpty(formState[q.key])
+  );
+  if (missing.length > 0) {
+    setError(`Please fill: ${missing.map((m) => m.label).join(", ")}`);
+    return;
+  }
 
-    setLoading(true);
-    setError(null);
+  setLoading(true);
+  setError(null);
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/answers`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-tenant-id": tenantId,
-          },
-          body: JSON.stringify({
-            tenantId,
-            questionnaireName,
-            patientId,
-            answers: formState,
-          }),
-        }
-      );
+  try {
+    const result = await submitPatientAnswers({
+      tenantId,
+      questionnaireName,
+      patientId,
+      answers: formState,
+    });
 
-      if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg);
-      }
+    setSuccess(true);
+    console.log("Submitted", result);
 
-      const json = await res.json();
-      setSuccess(true);
-      console.log("Submitted", json);
-      setTimeout(() => {
-        router.push("/questionnaire/confirmation");
-      }, 1000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Submission failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setTimeout(() => {
+      router.push("/questionnaire/confirmation");
+    }, 1000);
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Submission failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <form className="space-y-6">

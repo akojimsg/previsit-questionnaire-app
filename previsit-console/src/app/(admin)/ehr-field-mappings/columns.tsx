@@ -24,6 +24,10 @@ export const getColumns = (
   onDelete: (mapping: EhrFieldMapping) => void
 ): ColumnDef<EhrFieldMapping>[] => [
   {
+    accessorKey: "ehrField",
+    header: "EHR Field",
+  },
+  {
     accessorKey: "questionKey",
     header: "Question Key",
   },
@@ -34,10 +38,6 @@ export const getColumns = (
   {
     accessorKey: "endpoint",
     header: "Endpoint",
-  },
-  {
-    accessorKey: "ehrField",
-    header: "EHR Field",
   },
   {
     accessorKey: "createdAt",

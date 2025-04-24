@@ -8,7 +8,7 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_DATABASE: previsit-questionnaire
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-previsit-questionnaire}
     volumes:
       - mongo_data:/data/db
     networks:
@@ -37,11 +37,15 @@ services:
       - mongo
       - redis
     environment:
-      - MONGODB_URI=mongodb://mongo:27017/previsit-questionnaire
-      - REDIS_URI=redis://redis:6379
-      - PORT=3000
-      - CONSOLE_URL=http://previsit-console:3000
-      - APP_URL=http://previsit-app:3000
+      MONGODB_URI: ${MONGODB_URI}
+      REDIS_URI: ${REDIS_URI}
+      PORT: ${API_PORT:-3000}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/v1/health/check"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     networks:
       - previsit-questionnaire-app-network
 
@@ -52,11 +56,12 @@ services:
     image: previsit-console
     container_name: previsit-questionnaire-console
     ports:
-      - "5173:3000"
+      - "4001:3000"
     depends_on:
-      - previsit-api
+      previsit-api:
+        condition: service_healthy
     environment:
-      - NEXT_PUBLIC_API_URL=http://previsit-api:3000/api/v1
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://previsit-api:3000/api}
     networks:
       - previsit-questionnaire-app-network
 
@@ -67,11 +72,13 @@ services:
     image: previsit-app
     container_name: previsit-questionnaire-app
     ports:
-      - "5174:3000"
+      - "4000:3000"
     depends_on:
-      - previsit-api
+      previsit-api:
+        condition: service_healthy
     environment:
-      - NEXT_PUBLIC_API_URL=http://previsit-api:3000/api/v1
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://previsit-api:3000/api}
+      NEXT_PUBLIC_CONSOLE_URL: ${NEXT_PUBLIC_CONSOLE_URL:-http://localhost:4001}
     networks:
       - previsit-questionnaire-app-network
 

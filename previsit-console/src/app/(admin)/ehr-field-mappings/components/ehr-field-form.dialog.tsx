@@ -77,7 +77,7 @@ export function EhrFieldFormDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {initialData?.questionKey ? "Edit Mapping" : "Create Mapping"}
+            {initialData?.questionKey ? "Edit Field Mapping" : "Create Field Mapping"}
           </DialogTitle>
         </DialogHeader>
 

@@ -3,6 +3,8 @@
 import { Questionnaire } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
 
 export const getColumns = (): ColumnDef<Questionnaire>[] => [
   {
@@ -49,5 +51,24 @@ export const getColumns = (): ColumnDef<Questionnaire>[] => [
           {format(new Date(row.original.updatedAt), "yyyy-MM-dd HH:mm")}
         </span>
       ) : null,
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => {
+            // Placeholder for detail slider logic
+            console.log("View details for:", row.original);
+          }}
+        >
+          <Eye className="w-4 h-4 mr-1" />
+          Details
+        </Button>
+      </div>
+    ),
   },
 ];

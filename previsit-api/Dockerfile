@@ -29,12 +29,12 @@ RUN addgroup -S nodegroup && adduser -S nodeuser -G nodegroup
 
 WORKDIR /app
 
-# Copy only compiled output and required files
+# Copy build output from the first stage
 COPY --from=builder /app/previsit-api/dist ./dist
+
+# Copy just the API's package.json (for prod install)
 COPY --from=builder /app/previsit-api/package.json ./
 
-
-# Install only production dependencies
 RUN corepack enable && pnpm install --prod
 
 # Change ownership to non-root user
