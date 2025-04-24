@@ -24,8 +24,12 @@ import {
 } from '@nestjs/swagger';
 import { EhrFieldMappingService } from './ehr-field-mapping.service';
 import { EhrFieldMapping } from './ehr-field-mapping.schema';
-import { CreateEhrFieldMappingDto } from './dtos/create-field-mapping.dto';
 import {
+  CreateEhrFieldMappingBulkDto,
+  CreateEhrFieldMappingDto,
+} from './dtos/create-field-mapping.dto';
+import {
+  BulkUploadResponseDto,
   EhrFieldMappingResponseDto,
   EhrResolvedFieldMappingResponseDto,
 } from './dtos/field-mapping-response.dto';
@@ -162,7 +166,11 @@ export class EhrFieldMappingController {
 
   @Get('resolve/question/:questionKey')
   @ApiOperation({ summary: 'Resolve EHR field mapping for a question.' })
-  @ApiHeader({ name: 'tenantId', required: true })
+  @ApiHeader({
+    name: 'x-tenant-id',
+    required: true,
+    description: 'Tenant identifier',
+  })
   @ApiParam({ name: 'questionKey', required: true })
   @ApiQuery({ name: 'ehrProvider' })
   @ApiOkResponse({
@@ -180,5 +188,32 @@ export class EhrFieldMappingController {
       ehrProvider,
       questionKey,
     );
+  }
+
+  @Post('bulk')
+  @ApiOperation({ summary: 'Bulk create EHR field mappings' })
+  @ApiHeader({
+    name: 'x-tenant-id',
+    required: true,
+    description: 'Tenant identifier',
+  })
+  @ApiCreatedResponse({
+    description: 'Bulk create EHR field mappings',
+    type: BulkUploadResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request. The provided data is invalid.',
+  })
+  async createBulk(
+    @Body() body: CreateEhrFieldMappingBulkDto,
+    @TenantId() tenantId: string,
+  ) {
+    const mappings = body.mappings.map((m) => ({
+      tenantId,
+      ...m,
+    }));
+
+    const result = await this.ehrService.bulkCreate(mappings);
+    return result;
   }
 }

@@ -8,14 +8,14 @@ export class QuestionResponseDto {
   questionKey!: string;
 
   @ApiProperty({
-    example: 'What is your date of birth?',
+    example: { en: 'Date of Birth', es: 'Fecha de Nacimiento' },
     description: 'Localized question text',
   })
   text!: string;
 
   @ApiProperty({
     required: false,
-    example: 'Please provide your date of birth',
+    example: { en: 'Localized description', es: 'Descripción localizada' },
     description: 'Localized description',
   })
   description?: string;
@@ -27,27 +27,22 @@ export class QuestionResponseDto {
     required: false,
     type: Object,
     isArray: true,
-    example: [
-      { value: 'yes', label: 'Yes' },
-      { value: 'no', label: 'No' },
-    ],
-    description: 'Localized options (label shown to user)',
+    example: [{ value: 'male', label: { en: 'Male', es: 'Hombre' } }],
   })
   options?: { value: string; label: string }[];
 
   @ApiProperty({
     required: false,
     example: 'Demographics',
-    description: 'Localized category (if any)',
   })
   category?: string;
 
   @ApiProperty({ example: true })
   isRequired!: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-04-22T22:29:30.585Z' })
   createdAt?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2025-04-22T22:29:30.585Z' })
   updatedAt?: string;
 }

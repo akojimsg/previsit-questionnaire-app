@@ -27,6 +27,10 @@ export class PatientAnswerService {
     return this.model.create(dto);
   }
 
+  async findAll(tenantId: string) {
+    return this.model.find({ tenantId }).exec();
+  }
+
   // Patient data types can be pulled from standardized data models
   // like FHIR or HL7, or they can be custom data models
   // depending on the specific requirements of the application.

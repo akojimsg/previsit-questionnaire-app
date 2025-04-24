@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchWithTenant } from "./fetcher";
-import { EhrFieldMapping, Question, Questionnaire } from "./types";
+import { EhrFieldMapping, PatientAnswer, Question, Questionnaire } from "./types";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
 
 export async function fetchMappings(tenantId: string, ehrProvider?: string) {
   const url = ehrProvider
@@ -60,6 +60,20 @@ export async function deleteMapping(
     url,
     {
       method: "DELETE",
+    },
+    tenantId
+  );
+}
+
+export async function bulkUploadMappings(
+  data: { mappings: EhrFieldMapping[] },
+  tenantId: string
+) {
+  return fetchWithTenant<{ success: string; failed: string }>(
+    `${API_BASE_URL}/v1/ehr-mappings/bulk`,
+    {
+      method: "POST",
+      body: JSON.stringify(data),
     },
     tenantId
   );
@@ -146,4 +160,14 @@ export async function fetchQuestionnaires(
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
   }));
+}
+
+export async function fetchPatientAnswers(
+  tenantId: string
+): Promise<PatientAnswer[]> {
+  return fetchWithTenant<PatientAnswer[]>(
+    `${API_BASE_URL}/v1/answers`,
+    {},
+    tenantId
+  );
 }

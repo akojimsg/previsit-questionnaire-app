@@ -7,28 +7,28 @@ import { Card, CardContent } from "@/components/ui/card";
 const SECTIONS = [
   {
     label: "Questionnaires",
-    href: "/(admin)/questionnaires",
+    href: "/questionnaires",
     icon: FileText,
     description: "Manage previsit forms",
     count: 12,
   },
   {
     label: "Questions",
-    href: "/(admin)/questions",
+    href: "/questions",
     icon: HelpCircle,
     description: "Configure reusable questions",
     count: 24,
   },
   {
     label: "EHR Mappings",
-    href: "/(admin)/ehr-mappings",
+    href: "/ehr-mappings",
     icon: Share2,
     description: "Map questions to EHR fields",
     count: 18,
   },
   {
-    label: "Patient Responses",
-    href: "/(admin)/patient-responses",
+    label: "Assessments",
+    href: "/assessments",
     icon: Users,
     description: "View submitted responses",
     count: 103,

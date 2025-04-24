@@ -1,61 +1,80 @@
 # ----------------------------------------
-# Variables
+# Project Config
 # ----------------------------------------
 APP_NAME=previsit-questionnaire-app
 DOCKERFILE=Dockerfile
 DOCKER_CONTEXT=.
 IMAGE_TAG=$(APP_NAME):latest
+DOCKER=docker --context default compose
 
 # ----------------------------------------
-# Environment
+# Load Environment Variables from .env (if present)
 # ----------------------------------------
 ifneq (,$(wildcard .env))
-	include .env
-	export
+  include .env
+  export
 endif
+
 # ----------------------------------------
-# Targets
+# Docker contexts
 # ----------------------------------------
-.PHONY: build run stop clean rebuild format lint test seed compose-up compose-down
+.PHONY: build run stop clean rebuild rebuild-api rebuild-app rebuild-console
 
-# build the Docker image for the API
-build:
-	docker build -f $(DOCKERFILE) -t $(IMAGE_TAG) $(DOCKER_CONTEXT)
+build: ## Build Docker image (API)
+	build-pnpm build-api build-app build-console
 
-# run the Docker container for the API
-# -p 3000:3000 maps the container's port 3000 to the host's port 3000
-run:
-	docker run --rm -p 3000:3000 --network previsit-net $(IMAGE_TAG)
+build-api: ## Build Docker image (API)
+	$(DOCKER) build --no-cache previsit-api
 
-stop:
-	docker stop $(shell docker ps -q --filter "ancestor=$(IMAGE_TAG)")
+build-app: ## Build Docker image (Patient App)
+	$(DOCKER) build --no-cache previsit-app
 
-# remove the Docker image for the API
-# -f forces the removal of the image
-clean:
-	docker rmi -f $(IMAGE_TAG)
+build-console: ## Build Docker image (Admin Console)
+	$(DOCKER) build --no-cache previsit-console
 
-# remove all stopped containers and dangling images
-rebuild: clean build
+# ----------------------------------------
+# Start or restart containers
+# ----------------------------------------	
 
-# format the code using Prettier
-format:
+start-all: ## Start/Restart all containers
+	$(DOCKER) down -v && $(DOCKER) up -d
+
+start-api: ## Rebuild and restart API container
+	$(DOCKER) build --no-cache previsit-api
+	$(DOCKER) up -d --force-recreate previsit-api
+
+start-app: ## Rebuild and restart Patient App container
+	$(DOCKER) build --no-cache previsit-app
+	$(DOCKER) up -d --force-recreate previsit-app
+
+start-console: ## Rebuild and restart Admin Console container
+	$(DOCKER) build --no-cache previsit-console
+	$(DOCKER) up -d --force-recreate previsit-console
+
+# ----------------------------------------
+# Docker Compose Targets
+# ----------------------------------------
+.PHONY: compose-up compose-down
+
+compose-up: ## Start full dev environment
+	$(DOCKER) up -d
+
+compose-down: ## Stop dev environment
+	$(DOCKER) down
+
+# ----------------------------------------
+# Dev Workflow (Formatting / Linting / Testing / Seeding)
+# ----------------------------------------
+.PHONY: format lint test seed
+
+build-pnpm: ## Build pnpm
+	pnpm build
+
+format: ## Format code with Prettier
 	pnpm format
 
-# format the code using ESLint
-lint:
+lint: ## Run ESLint on codebase
 	pnpm lint
 
-# run the tests in all workspaces
-# -s flag is used to run the tests in silent mode
-test:
+test: ## Run tests
 	pnpm test
-
-seed:
-	pnpm --filter api run seed
-
-compose-up:
-	docker-compose up -d
-
-compose-down:
-	docker-compose down

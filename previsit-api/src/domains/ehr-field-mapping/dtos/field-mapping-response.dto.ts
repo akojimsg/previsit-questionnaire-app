@@ -33,3 +33,14 @@ export class EhrResolvedFieldMappingResponseDto {
   @ApiProperty()
   ehrField!: string;
 }
+
+export class BulkUploadResponseDto {
+  @ApiProperty({
+    example: 20,
+    description: 'Number of successfully inserted mappings',
+  })
+  success!: number;
+
+  @ApiProperty({ example: 5, description: 'Number of failed insert attempts' })
+  failed!: number;
+}

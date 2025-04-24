@@ -6,6 +6,7 @@ import {
   Query,
   Headers,
   BadRequestException,
+  Param,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -55,7 +56,7 @@ export class PatientAnswerController {
     return this.service.create({ ...dto, tenantId });
   }
 
-  @Get()
+  @Get('patient/{patientId}')
   @ApiOperation({
     summary: 'Get responses for a patient.',
   })
@@ -74,9 +75,33 @@ export class PatientAnswerController {
   })
   async findByPatient(
     @Headers('x-tenant-id') tenantId: string,
-    @Query('patientId') patientId: string,
+    @Param('patientId') patientId: string,
   ): Promise<PatientAnswerResponseDto[]> {
     if (!tenantId) throw new BadRequestException('Missing x-tenant-id header');
     return this.service.findByPatient(tenantId, patientId);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: 'Get responses for a patient.',
+  })
+  @ApiHeader({
+    name: 'x-tenant-id',
+    required: true,
+    description: 'Tenant identifier',
+  })
+  @ApiOkResponse({
+    description: 'Responses for a patient.',
+    type: PatientAnswerResponseDto,
+    isArray: true,
+  })
+  @ApiNotFoundResponse({
+    description: 'No responses found for the given patientId.',
+  })
+  async findAll(
+    @Headers('x-tenant-id') tenantId: string,
+  ): Promise<PatientAnswerResponseDto[]> {
+    if (!tenantId) throw new BadRequestException('Missing x-tenant-id header');
+    return this.service.findAll(tenantId);
   }
 }
