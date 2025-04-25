@@ -120,7 +120,10 @@ This will:
 
 ### Architecture Diagram
 
-![alt text](architecture_diagram.png)
+This system follows a modular monolith architecture deployed in a scalable Kubernetes environment. It supports multi-tenancy, inter-domain communication via event bus, and includes observability tooling and a cache-backed database layer for performance.
+
+![System Architecture](architecture_diagram.svg)
+
 
 #### ✅ What Was Implemented
 
