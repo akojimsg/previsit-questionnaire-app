@@ -122,7 +122,10 @@ This will:
 
 This system follows a modular monolith architecture deployed in a scalable Kubernetes environment. It supports multi-tenancy, inter-domain communication via event bus, and includes observability tooling and a cache-backed database layer for performance.
 
-![System Architecture](architecture_diagram.svg)
+It is designed with cloud-native deployment of the Previsit application, including CDN-backed delivery for tenant-facing apps, scalable API services with horizontal pod autoscaling, message-based async processing, and a primary-replica DB setup with Redis-backed caching.
+
+
+![System Architecture](architecture_diagram.png)
 
 
 #### ✅ What Was Implemented
